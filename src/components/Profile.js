@@ -12,5 +12,6 @@ export const Profile = () => {
     <div>
       Welcome {auth.user}.<button onClick={handleLogout}>Logout</button>
     </div>
+    
   )
 }
