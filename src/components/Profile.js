@@ -3,14 +3,14 @@ import { useAuth } from './auth'
 
 export const Profile = () => {
   const navigate = useNavigate()
-  const auth = useAuth()
+  const authLocal = useAuth()
   const handleLogout = () => {
-    auth.logout()
+    authLocal.logout()
     navigate('/login')
   }
   return (
     <div>
-      Welcome {auth.user}.<button onClick={handleLogout}>Logout</button>
+      Welcome {authLocal.user}.<button onClick={handleLogout}>Logout</button>
     </div>
     
   )

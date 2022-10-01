@@ -1,13 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from './auth'
+import { Link } from 'react-router-dom'
+
 
 export const Home = (props) => {
-  const navigate = useNavigate()
-  const auth = useAuth()
-  const handleLogout = () => {
-    // auth.logout()
-    navigate('/addtodo')
-  }
+ 
+  
+
   return (
     <>
       <div className='container my-5 d-flex flex-column justify-content-center align-items-center'>

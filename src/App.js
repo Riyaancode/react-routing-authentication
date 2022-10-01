@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Home } from './components/Home'
 // import { About } from './components/About'
@@ -10,14 +10,32 @@ import {Signup} from './components/Signup'
 import { Profile } from './components/Profile'
 import { RequireAuth } from './components/RequireAuth'
 import AddTodo from './components/addTodo'
-
+import { getDatabase, ref, onValue} from "firebase/database";
 
 function App() {
+  const[items,setItems] = useState([])
+  const [todos] = useState('');
+  const[toggle,setToggle] = useState(true)
 
   
-  const[items,setItems] = useState([])
-  const [todos, setTodos] = useState('');
-  const[toggle,setToggle] = useState(true)
+ useEffect(()=>{
+  const db = getDatabase();
+  const starCountRef = ref(db);
+  onValue(starCountRef, (snapshot) => {
+    const data = snapshot.val();
+    // updateStarCount(postElement, data);
+
+    console.log(data)
+  });
+
+
+ })
+
+
+
+
+  
+
 
 
   const getTodos = (item)=>{

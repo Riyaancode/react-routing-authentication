@@ -1,30 +1,42 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from './auth'
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from './firebase';
 export const Signup = () => {
   const [user, setUser] = useState('')
   const [pass, setPass] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
-  const auth = useAuth()
+  const authLocal = useAuth()
+
+
+const auth = getAuth(app);
+
+  
+
 
   const redirectPath = location.state?.path || '/login'
 
   const handleSignup = () => {
-    if (!user == '' ) {
-        if (!pass == '') {
-            localStorage.setItem('User',user);
-            localStorage.setItem('Password',pass);
-            auth.login(user)
-            navigate(redirectPath, { replace: true })
-        } else {
-            alert('Password is requires')
-        }
 
-    } else {
-        alert('Username is requires')
-    }
+    createUserWithEmailAndPassword(auth, user, pass)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      authLocal.login(user)
+      localStorage.setItem('User',JSON.stringify(user));
+      localStorage.setItem('Password',pass);
+      navigate(redirectPath, { replace: true })
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      // const errorMessage = error.message;
+      alert(errorCode)
+    });
+
+
+   
     
   }
   return (
@@ -39,10 +51,10 @@ export const Signup = () => {
 
 <div className='container w-50'>
 <h1>Signup</h1>
-<form>
+<div>
   <div className="mb-3" />
     <label htmlFor='usrname' className="form-label">Username</label>
-    <input type='text' className='form-control' id='usrname' onChange={e => setUser(e.target.value)} />
+    <input type='email' className='form-control' id='usrname' onChange={e => setUser(e.target.value)} />
   <div />
 
   <div className="mb-3" >
@@ -50,7 +62,7 @@ export const Signup = () => {
     <input type='password' className='form-control' id='password'onChange={e => setPass(e.target.value)} />
     </div>
     <button className="btn btn-primary" onClick={handleSignup}>Signup</button>
-</form>
+</div>
 </div>
 </>
   )
